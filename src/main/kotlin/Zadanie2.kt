@@ -45,6 +45,6 @@ fun main() {
     val inputStrs = inputStr("Привет, введи буквы ")
 
     for (i in 0 until inputStrs.length - 1) {
-        print(encodePair(inputStrs[i], inputStrs[i + 1]))
+        print(encodePair(inputStrs[i], inputStrs[i + 1]) + " ")
     }
 }
