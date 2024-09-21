@@ -29,15 +29,19 @@ fun inputStr(msg:String): String {
         return ret
     }
 }
-
+private val randomCodeMap = mutableMapOf<Char, String>()
 private fun encodePair(first: Char, second: Char, encodeMode: Int): String {
     return when (encodeMode) {
-        0 -> { 
+        0 -> {
             (first.code - 1071 + (second.code - 1072) * 32).toString().padStart(3, '0')
         }
-        1 -> { 
-            val randomCode = (1..999).random().toString().padStart(3, '0')
-            randomCode
+        1 -> {
+            val key = first
+            randomCodeMap.getOrPut(key)
+            //Функция getOrPut проверяет, есть ли уже код для данного символа в карте
+            {
+                (1..999).random().toString().padStart(3, '0')
+            }
         }
         else -> {
             throw IllegalArgumentException("Некорректный режим кодирования")
@@ -54,7 +58,11 @@ fun main() {
         0
     }
 
-    for (i in 0 until inputStrs.length - 1) {
-        print(encodePair(inputStrs[i], inputStrs[i + 1], encodeMode) + " ")
+    for (i in 0 until inputStrs.length) {
+        if (i < inputStrs.length - 1) {
+            print(encodePair(inputStrs[i], inputStrs[i + 1], encodeMode) + " ")
+        } else {
+            print(encodePair(inputStrs[i], ' ', encodeMode))
+        }
     }
 }
