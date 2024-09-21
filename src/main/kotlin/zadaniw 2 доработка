@@ -1,0 +1,60 @@
+fun verifyStr(str:String, alphabet:Array<Char>): Boolean {
+    for (char in str) {
+        if (!alphabet.contains(char)) return false
+    }
+
+    return true
+}
+
+fun inputStr(msg:String): String {
+    var ret:String
+    val alphabet = Array(32) { (it + 1072).toChar() }
+
+    while (true) {
+        print(msg)
+        ret = readln()
+
+        if (ret.isEmpty()) {
+            println("Строка не может быть пустой")
+            continue
+        }
+
+        if (!verifyStr(ret, alphabet)) {
+            println("Строка должна содержать только эти символы: ")
+            alphabet.forEach { print(it) }
+            println()
+            continue
+        }
+
+        return ret
+    }
+}
+
+private fun encodePair(first: Char, second: Char, encodeMode: Int): String {
+    return when (encodeMode) {
+        0 -> { 
+            (first.code - 1071 + (second.code - 1072) * 32).toString().padStart(3, '0')
+        }
+        1 -> { 
+            val randomCode = (1..999).random().toString().padStart(3, '0')
+            randomCode
+        }
+        else -> {
+            throw IllegalArgumentException("Некорректный режим кодирования")
+        }
+    }
+}
+
+fun main() {
+    val inputStrs = inputStr("Привет, введи буквы ")
+    val encodeMode = if (inputStrs.length > 1) {
+        print("Использовать типовую таблицу (0) или генерировать случайную (1)? ")
+        readln().toInt()
+    } else {
+        0
+    }
+
+    for (i in 0 until inputStrs.length - 1) {
+        print(encodePair(inputStrs[i], inputStrs[i + 1], encodeMode) + " ")
+    }
+}
